@@ -1,11 +1,16 @@
-/**
- * Created with JetBrains WebStorm.
- * User: janos
- * Date: 3/29/13
- * Time: 9:41 AM
- * To change this template use File | Settings | File Templates.
- */
-var connect = require('connect');
-connect.createServer(
-    connect.static(__dirname)
-).listen(8080);
+var express = require('express');
+
+var fs = require('fs');
+
+var app = express.createServer(express.logger());
+
+var buffer = new Buffer(fs.readFileSync('index.html','utf-8'),'utf-8');
+
+app.get('/', function(request, response) {
+  response.send(buffer.toString());
+});
+
+var port = process.env.PORT || 8080
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
